@@ -10,6 +10,7 @@ const AppView = {
   SCHEDULER: 'SCHEDULER',
   REGISTER: 'REGISTER',
   SUCCESS: 'SUCCESS',
+  REGISTERED: 'REGISTERED',
   MFA_CHOICE: 'MFA_CHOICE',
   QR_SETUP: 'QR_SETUP'
 };
@@ -28,6 +29,8 @@ function App() {
         return <LoginPage onNavigate={setView} />;
       case AppView.REGISTER:
         return <RegisterPage onNavigate={setView} />;
+      case AppView.REGISTERED:
+        return <RegisteredPage onNavigate={setView} />;
       default:
         return <LandingPage onNavigate={setView} />;
     }

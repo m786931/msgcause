@@ -3,12 +3,17 @@ import { Church, Contact, Mail, Phone, User } from "lucide-react";
 import "../styles/RegisterPage.css";
 
 export default function RegisterPage({ onNavigate }) {
-  const [form, setForm] = useState({
+  const [status, setStatus] = useState(null);
+  const initialForm = {
     orgName: "",
+    contact: "",
     email: "",
     phone: "",
     ein: "",
     agree: false,
+  };
+  const [form, setForm] = useState({
+    ...initialForm,
   });
 
   const handleChange = (e) => {
@@ -19,9 +24,28 @@ export default function RegisterPage({ onNavigate }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form with data:", form);
+    setStatus("saving");
     // TODO: Add validation and submit logic
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error("Server error");
+
+      const saved = await res.json();
+      console.log("Saved:", saved);
+      setForm(initialForm);       // clear the form
+      setStatus("success");       // show the success message
+      setTimeout(() => onNavigate && onNavigate("REGISTERED"), 2000); // navigate after 2s
+    } catch (err) {
+      setStatus("error");
+    }
   };
 
   return (
@@ -125,7 +149,7 @@ export default function RegisterPage({ onNavigate }) {
                 type="tel"
                 id="phone"
                 name="phone"
-                placeholder="+1 (555) 000-0000"
+                placeholder="+1 (202) 555-0100"
                 value={form.phone}
                 onChange={handleChange}
                 required
@@ -151,7 +175,6 @@ export default function RegisterPage({ onNavigate }) {
                 placeholder="00-0000000"
                 value={form.ein}
                 onChange={handleChange}
-                required
                 className="form-input w-full pl-25 pr-4 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
@@ -168,8 +191,8 @@ export default function RegisterPage({ onNavigate }) {
               I agree to the Terms of Service and Privacy Policy.
             </label>
           </div>
-          <button type="submit" className="form-submit-btn">
-            Create Account
+          <button type="submit" disabled={status === "saving"}>
+            {status === "saving" ? "Saving..." : "Submit"}
           </button>
           <div className="form-login-link">
             Already have an account?{" "}
@@ -184,6 +207,8 @@ export default function RegisterPage({ onNavigate }) {
               <b>Log In</b>
             </a>
           </div>
+          {status === "success" && <p>Saved successfully!</p>}
+          {status === "error" && <p>Something went wrong.</p>}
         </form>
       </div>
     </div>
