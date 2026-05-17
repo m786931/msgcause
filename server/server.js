@@ -9,14 +9,7 @@ const port = process.env.PORT || 3000;
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim());
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (native mobile apps, curl, Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked: ${origin}`));
-    }
-  },
+  origin: true,
   optionsSuccessStatus: 200,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
