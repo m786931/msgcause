@@ -17,7 +17,10 @@ const corsOptions = {
       callback(new Error(`CORS blocked: ${origin}`));
     }
   },
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 };
 
 app.use(cors(corsOptions));
@@ -28,10 +31,5 @@ app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
 });
-
-
-
-
-
 
 
