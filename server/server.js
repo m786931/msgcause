@@ -23,6 +23,9 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"]
 };
 
+// Handle preflight OPTIONS requests for ALL routes
+app.options('*', cors(corsOptions));
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/register", usersRouter);
