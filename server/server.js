@@ -20,6 +20,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/register", usersRouter);
 
+console.log('PORT env var is:', process.env.PORT);
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
