@@ -1,10 +1,17 @@
 import { useState } from 'react'
 import LandingPage from './pages/LandingPage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx';
+import FeaturesPage from './pages/FeaturesPage.jsx';
+import PricingPage from './pages/PricingPage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
+import MemberLoginPage from './pages/MemberLoginPage.jsx';
 import './App.css'
 
 const AppView = {
   LANDING: 'LANDING',
+  FEATURES: 'FEATURES',
+  PRICING: 'PRICING',
+  ABOUT: 'ABOUT',
   LOGIN: 'LOGIN',
   DASHBOARD: 'DASHBOARD',
   SCHEDULER: 'SCHEDULER',
@@ -26,11 +33,17 @@ function App() {
       case AppView.LANDING:
         return <LandingPage onNavigate={setView} />;
       case AppView.LOGIN:
-        return <LoginPage onNavigate={setView} />;
+        return <MemberLoginPage onNavigate={setView} />;
       case AppView.REGISTER:
         return <RegisterPage onNavigate={setView} />;
       case AppView.REGISTERED:
         return <RegisteredPage onNavigate={setView} />;
+      case AppView.FEATURES:
+        return <FeaturesPage onNavigate={setView} />;
+      case AppView.PRICING:
+        return <PricingPage onNavigate={setView} />;
+      case AppView.ABOUT:
+        return <AboutPage onNavigate={setView} />;
       default:
         return <LandingPage onNavigate={setView} />;
     }
@@ -38,18 +51,18 @@ function App() {
   return (
     <>
       <header className="header">
-        <div className="brand">MsgCause</div>
+        <div className="brand">ConnectCard</div>
 
         <div className="nav-actions">
           <nav className="nav-links" aria-label="Main navigation">
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#about">About</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); setView(AppView.FEATURES); }}>Features</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); setView(AppView.PRICING); }}>Pricing</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); setView(AppView.ABOUT); }}>About</a>
           </nav>
 
           <div className="auth-buttons">
             <button className="button button-primary">Sign Up</button>
-            <button className="button button-outline">Member Login</button>
+            <button className="button button-outline" onClick={() => setView(AppView.LOGIN)}>Member Login</button>
           </div>
         </div>
       </header>
@@ -61,7 +74,7 @@ function App() {
         <div className="footer-main">
           <div className="footer-brand">
             <span className="footer-icon" role="img" aria-label="bullhorn">📢</span>
-            <span className="footer-title">MsgCause</span>
+            <span className="footer-title">ConnectCards</span>
             <p className="footer-desc">
               Empowering social change through better communication technology
             </p>
@@ -69,9 +82,9 @@ function App() {
           <div className="footer-columns">
             <div className="footer-col">
               <div className="footer-heading">Product</div>
-              <a href="#">Features</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setView(AppView.FEATURES); }}>Features</a>
               <a href="#">Integrations</a>
-              <a href="#">Pricing</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setView(AppView.PRICING); }}>Pricing</a>
             </div>
             <div className="footer-col">
               <div className="footer-heading">Resources</div>

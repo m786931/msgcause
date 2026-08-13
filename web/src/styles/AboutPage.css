@@ -1,0 +1,143 @@
+.about-page {
+  padding-top: 64px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.about-hero {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.about-hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-hero-heading {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+  color: #ffffff;
+}
+
+.about-hero-heading-accent {
+  color: #6366F1;
+  display: block;
+}
+
+.about-hero-body {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #abb1bc;
+  margin: 0;
+  max-width: 520px;
+}
+
+.about-hero-image {
+  flex: 1;
+  max-width: 480px;
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Why Section */
+.about-why {
+  background-color: #E1E0FF;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.about-why-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.about-why-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1rem 0;
+}
+
+.about-why-subtitle {
+  font-size: 1rem;
+  color: #374151;
+  margin: 0 auto 3rem;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.about-cards {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.about-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem 1.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  max-width: 320px;
+  text-align: left;
+}
+
+.about-card-middle {
+  margin-top: 2.5rem;
+}
+
+.about-card-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+}
+
+.about-card-body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-hero {
+    flex-direction: column;
+  }
+
+  .about-hero-image {
+    max-width: 100%;
+  }
+
+  .about-hero-heading {
+    font-size: 2.25rem;
+  }
+
+  .about-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-card-middle {
+    margin-top: 0;
+  }
+
+  .about-card {
+    max-width: 100%;
+    width: 100%;
+  }
+}

@@ -1,15 +1,28 @@
 {
   "name": "msgcause-root",
   "private": true,
-  "workspaces": ["web", "mobile", "server"],
+  "workspaces": [
+    "web",
+    "mobile",
+    "server"
+  ],
   "scripts": {
-    "dev": "concurrently -n web,server -c cyan,yellow \"npm run dev -w web\" \"npm run dev -w server\"",
+    "dev": "concurrently -n web,server,mobile -c cyan,yellow,green \"npm run dev -w web\" \"npm run dev -w server\" \"npm run dev -w mobile\"",
     "dev:web": "npm run dev -w web",
     "dev:server": "npm run dev -w server",
     "dev:mobile": "npm run dev -w mobile",
-    "dev:all": "concurrently -n web,server,mobile -c cyan,yellow,green \"npm run dev -w web\" \"npm run dev -w server\" \"npm run dev -w mobile\""
+    "dev:all": "npm run dev"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.21.0"
   }
 }

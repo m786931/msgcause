@@ -1,7 +1,17 @@
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 const express = require('express');
+const cookieParser = require("cookie-parser");
 const cors = require('cors');
-const usersRouter = require("./routes/register");
+
+//const bcrypt = require("bcrypt");
+//const jwt = require("jsonwebtoken");
+
+const authRoutes = require("./routes/auth");
+const connectRoutes = require("./routes/connect");
+const accountRegisterRoutes = require("./routes/accountRegister");
+
+
+//const usersRouter = require("./routes/register");
 const app = express();
 
 // Read port and allowed origins from env
@@ -18,7 +28,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/api/register", usersRouter);
+app.use(cookieParser());
+app.use("/auth", authRoutes);
+app.use("/connect", connectRoutes);
+app.use("/api/register", accountRegisterRoutes);
 
 console.log('PORT env var is:', process.env.PORT);
 
@@ -26,5 +39,3 @@ app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
   console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
 });
-
-

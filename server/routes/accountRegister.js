@@ -1,9 +1,9 @@
 const express = require("express");
 const { body } = require("express-validator");
 const router = express.Router();
-const pool = require("../db");
+const pool = require("../db/pool");
 const validate = require("../middleware/validate");
-const register_model = require("../models/registerModel");
+const register_model = require("../models/accountRegisterModel");
 
 const userValidationRules = [
   body("orgName")

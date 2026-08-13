@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-const pool = require("../db");
+const pool = require("../db/pool");
 
 const getRegisteredUsers = async () => {
   try {

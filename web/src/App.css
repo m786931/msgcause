@@ -1,8 +1,6 @@
 #root {
-  max-width: 1280px;
-  /*margin: 0 auto;
-  padding: 0 2rem 2rem;*/
-  text-align: center;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 /* Make header sit at the top of the page */
@@ -80,7 +78,9 @@ main {
 
 .brand {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
+  color: #6366F1;
+  font-family: 'Hanken Grotesk', sans-serif;
   text-align: left;
 }
 
@@ -168,6 +168,8 @@ main {
 
 .footer-title {
   font-weight: 700;
+  font-family: 'Hanken Grotesk', sans-serif;
+  color: #6366F1;
   font-size: 1.25rem;
   margin-left: 0.5rem;
   display: inline-block;

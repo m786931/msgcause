@@ -1,20 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { loadConnectFlow, saveConnectFlow } from "../utils/connectFlowStorage";
 import { ChevronRight, Mail, Phone } from "lucide-react";
 import phoneInHand from "../assets/phoneInHand.png";
 
-export default function GiftPage({ onNavigate }) {
-  const [tab, setTab] = useState("email");
-  const [contact, setContact] = useState("");
+export default function DigitalConnectPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const flowData = location.state || loadConnectFlow();
+  const [tab, setTab] = useState(flowData?.preferredContactMethod || "email");
+  const [email, setEmail] = useState(flowData?.email || "");
+  const [phone, setPhone] = useState(flowData?.phone || "");
+
+  useEffect(() => {
+    if (location.state) {
+      saveConnectFlow(location.state); // keeps refresh support
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (!flowData) {
+      navigate("/", { replace: true });
+    }
+  }, [flowData, navigate]);
+
+  if (!flowData) return null;
 
   const handleClaim = () => {
-    if (contact.trim()) {
-      onNavigate && onNavigate("VISITOR_STEP3");
-    }
+    const payload = {
+      ...flowData,
+      preferredContactMethod: tab,
+      email: email.trim(),
+      phone: phone.trim(),
+    };
+
+    saveConnectFlow(payload);
+    navigate("/address-connect", { state: payload });
   };
 
-  const handleSkip = () => {
-    onNavigate && onNavigate("VISITOR_STEP3");
-  };
+
 
   return (
     <div className="flex flex-col min-h-dvh bg-white px-6 pt-10 pb-6">
@@ -31,7 +56,9 @@ export default function GiftPage({ onNavigate }) {
           <div className="h-1 flex-1 rounded-full bg-gray-200" />
         </div>
       </div>
-
+      <h1>Gift Page</h1>
+      <p>Welcome, {flowData.firstName}</p>
+      <p>Ministry: {flowData.ministryName}</p>
       {/* Image with overlaid text */}
       <div className="relative w-full mb-3 rounded-2xl overflow-hidden">
         <img
@@ -53,22 +80,17 @@ export default function GiftPage({ onNavigate }) {
             Welcome Home!
           </h2>
           <p className="text-sm text-white/80 leading-snug">
-            We are so glad you joined us today. To say thank you, we'd love to send you{" "}
-            <span className="italic opacity-75">[gift details coming soon]</span>.
+            If you’d like, share your email or phone number. We’d love to send a quick thank‑you and keep you updated about things happening in our church family — only occasionally, and only if that’s helpful to you.{" "}
           </p>
         </div>
       </div>
 
       {/* Gift delivery box */}
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm px-4 pt-4 pb-4 mb-3">
-        <p className="text-sm font-bold text-gray-900 mb-4">
-          Where should we send it?
-        </p>
-
         {/* Tab bar */}
         <div className="flex rounded-xl overflow-hidden border border-gray-200 mb-4">
           <button
-            onClick={() => { setTab("email"); setContact(""); }}
+            onClick={() => setTab("email")}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold transition-colors ${
               tab === "email"
                 ? "bg-green-500 text-white"
@@ -79,7 +101,7 @@ export default function GiftPage({ onNavigate }) {
             Email
           </button>
           <button
-            onClick={() => { setTab("phone"); setContact(""); }}
+            onClick={() => setTab("phone")}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-sm font-semibold transition-colors ${
               tab === "phone"
                 ? "bg-green-500 text-white"
@@ -100,8 +122,8 @@ export default function GiftPage({ onNavigate }) {
             />
             <input
               type="email"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
               className="w-full border border-gray-300 rounded-xl pl-10 pr-4 py-3 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
@@ -114,8 +136,8 @@ export default function GiftPage({ onNavigate }) {
             />
             <input
               type="tel"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               placeholder="+1 (555) 000-0000"
               className="w-full border border-gray-300 rounded-xl pl-10 pr-4 py-3 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
@@ -129,14 +151,8 @@ export default function GiftPage({ onNavigate }) {
           onClick={handleClaim}
           className="w-full bg-green-500 hover:bg-green-600 active:bg-green-700 text-white text-lg font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 transition-colors"
         >
-          Claim Gift
+          Next
           <ChevronRight size={22} strokeWidth={2.5} />
-        </button>
-        <button
-          onClick={handleSkip}
-          className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-400 text-base font-medium py-3.5 rounded-2xl transition-colors"
-        >
-          No thanks, I just want to submit my info
         </button>
       </div>
 
