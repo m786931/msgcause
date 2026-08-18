@@ -1,4 +1,5 @@
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+const envName = (process.env.NODE_ENV || 'development').toLowerCase();
+require('dotenv').config({ path: `.env.${envName}` });
 const express = require('express');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
