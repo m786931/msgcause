@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Church, Contact, Mail, Phone, User } from "lucide-react";
 import "../styles/RegisterPage.css";
+import { getApiBase } from "../utils/apiBase";
+
+const apiBase = getApiBase();
 
 export default function RegisterPage({ onNavigate }) {
   const [status, setStatus] = useState(null);
@@ -30,7 +33,7 @@ export default function RegisterPage({ onNavigate }) {
     setStatus("saving");
     // TODO: Add validation and submit logic
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
+      const res = await fetch(`${apiBase}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { saveConnectFlow, getVisitor, ensureVisitor, addAttendance } from "../utils/connectFlowStorage";
+import { getApiBase } from "../utils/apiBase";
 
-const apiBase = import.meta.env.PROD ? (import.meta.env.VITE_API_URL || "") : "";
+const apiBase = getApiBase();
 
 
 export default function VisitorPage({ onNavigate }) {
