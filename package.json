@@ -11,7 +11,10 @@
     "dev:web": "npm run dev -w web",
     "dev:server": "npm run dev -w server",
     "dev:mobile": "npm run dev -w mobile",
-    "dev:all": "npm run dev"
+    "dev:all": "npm run dev",
+    "deploy:mobile": "npm run deploy -w mobile",
+    "deploy:web": "npm run deploy -w web",
+    "deploy:all": "npm run deploy:mobile && npm run deploy:web"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"

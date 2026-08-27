@@ -1,3 +1,4 @@
+import { getApiBase } from "./apiBase";
 const CONNECT_FLOW_KEY = "connectFlow";
 const VISITOR_KEY = "mc_visitor";
 
@@ -72,9 +73,7 @@ export function ensureVisitor({ firstName, lastName }) {
   }
 }
 
-const apiBase = import.meta.env.PROD
-  ? (import.meta.env.VITE_API_URL || "")
-  : "";
+const apiBase = getApiBase();
 
 /**
  * POST attendance to the server for a given guid + visitor.
