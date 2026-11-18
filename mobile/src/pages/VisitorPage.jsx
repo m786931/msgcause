@@ -7,13 +7,15 @@ import { getApiBase } from "../utils/apiBase";
 const apiBase = getApiBase();
 
 
-export default function VisitorPage({ onNavigate }) {
+function VisitorPage() {
   const { guid } = useParams();
   const navigate = useNavigate();
   console.log("VisitorPage rendered, guid =", guid);
   const [ministryName, setMinistryName] = useState("");
   const [form, setForm] = useState({ firstName: "", lastName: "" });
   const [visitedBefore, setVisitedBefore] = useState(false);
+  const [attendeeType, setAttendeeType] = useState("visitor");
+  const hasStoredVisitor = visitedBefore;
 
 useEffect(() => {
   console.log("useEffect fired, guid =", guid);
@@ -81,13 +83,13 @@ useEffect(() => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (form.firstName.trim()) {
       const createAndContinue = async () => {
         // ensure we have a persistent visitor id for future visits
         try {
           const visitor = await ensureVisitor({ firstName: form.firstName.trim(), lastName: form.lastName.trim() });
-          const payload = { guid, ...form, ministryName, visitorId: visitor?.visitorId };
+          const payload = { guid, ...form, ministryName, visitorId: visitor?.visitorId, attendeeType };
           saveConnectFlow(payload);
           // record attendance on the server for this visit
           if (visitor?.visitorId && guid) {
@@ -97,6 +99,11 @@ useEffect(() => {
               lastName: form.lastName.trim(),
             });
           }
+          if (hasStoredVisitor && attendeeType === "member") {
+            navigate("/member", { state: payload });
+            return;
+          }
+
           navigate("/digital-connect", { state: payload });
         } catch (err) {
           console.error("Failed to create visitor and continue:", err);
@@ -169,9 +176,40 @@ useEffect(() => {
             placeholder="Smith"
             className="w-full border border-gray-300 rounded-xl px-4 py-3.5 text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           />
+
         </div>
       </div>
-
+      {hasStoredVisitor && (
+        <div className="mt-2">
+          <label className="block text-lg font-semibold text-gray-900 mb-2">
+            I am
+          </label>
+          <div className="flex rounded-xl overflow-hidden border border-gray-200">
+            <button
+              type="button"
+              onClick={() => setAttendeeType("member")}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
+                attendeeType === "member"
+                  ? "bg-green-500 text-white"
+                  : "bg-white text-gray-600"
+              }`}
+            >
+              I&apos;m a Member
+            </button>
+            <button
+              type="button"
+              onClick={() => setAttendeeType("visitor")}
+              className={`flex-1 py-2.5 text-sm font-semibold transition-colors ${
+                attendeeType === "visitor"
+                  ? "bg-green-500 text-white"
+                  : "bg-white text-gray-600"
+              }`}
+            >
+              I&apos;m a Visitor
+            </button>
+          </div>
+        </div>
+      )}
       {/* CTA + footer note */}
       <div className="mt-8">
         <button
@@ -189,3 +227,5 @@ useEffect(() => {
     </div>
   );
 }
+
+export default VisitorPage;
