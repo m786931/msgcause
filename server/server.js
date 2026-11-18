@@ -37,6 +37,12 @@ app.use("/api/register", accountRegisterRoutes);
 console.log('PORT env var is:', process.env.PORT);
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-  console.log(`Allowed origins: ${allowedOrigins.join(', ')}`);
+  const isHosted = Boolean(process.env.RAILWAY_PUBLIC_DOMAIN || process.env.RAILWAY_STATIC_URL || process.env.RENDER || process.env.VERCEL);
+  const startupTarget = isHosted
+    ? `0.0.0.0:${port} (container bind; public URL is provided by the host platform)`
+    : `http://localhost:${port}`;
+
+  console.log(`Server listening on ${startupTarget}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Allowed origins: ${allowedOrigins.join(', ') || '(none set)'}`);
 });
