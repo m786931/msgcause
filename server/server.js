@@ -1,5 +1,15 @@
 const envName = (process.env.NODE_ENV || 'development').toLowerCase();
 require('dotenv').config({ path: `.env.${envName}` });
+console.log(`[boot] Loading server (env=${envName})`);
+
+process.on('uncaughtException', (err) => {
+  console.error('[fatal] uncaughtException:', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[fatal] unhandledRejection:', reason);
+});
+
 const express = require('express');
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
@@ -34,6 +44,7 @@ app.use("/auth", authRoutes);
 app.use("/connect", connectRoutes);
 app.use("/api/register", accountRegisterRoutes);
 
+console.log('[boot] Routes registered');
 console.log('PORT env var is:', process.env.PORT);
 
 app.listen(port, () => {
