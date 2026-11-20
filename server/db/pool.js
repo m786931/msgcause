@@ -1,5 +1,14 @@
 const { Pool } = require("pg");
 
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+const hasExplicitPgHost = Boolean(process.env.PGHOST || process.env.DB_HOST);
+
+if (process.env.NODE_ENV === "production" && !hasDatabaseUrl && !hasExplicitPgHost) {
+  throw new Error(
+    "Missing database configuration: set DATABASE_URL (preferred) or PGHOST/PGUSER/PGPASSWORD/PGDATABASE in production."
+  );
+}
+
 const connectionConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
