@@ -16,13 +16,23 @@ const connectionConfig = process.env.DATABASE_URL
 
 const pool = new Pool(connectionConfig);
 
+const dbSource = process.env.DATABASE_URL
+  ? "DATABASE_URL"
+  : process.env.PGHOST || process.env.PGUSER
+    ? "PG* env vars"
+    : "DB_* defaults";
+
+const effectiveHost = process.env.DATABASE_URL
+  ? "(from DATABASE_URL)"
+  : (connectionConfig.host || "localhost");
+
 // Log connection info
 console.log("Database Connection Info:");
-console.log("  Host:", process.env.PGHOST || process.env.DB_HOST || "localhost");
-console.log("  User:", process.env.PGUSER || process.env.DB_USER || "postgres");
+console.log("  Host:", effectiveHost);
+console.log("  User:", process.env.PGUSER || process.env.DB_USER || "(from DATABASE_URL)");
 console.log("  Password:", process.env.PGPASSWORD || process.env.DB_PASSWORD ? "***" : "NOT SET");
-console.log("  Database:", process.env.PGDATABASE || process.env.DB_NAME || "myapp");
-console.log("  Source:", process.env.DATABASE_URL ? "DATABASE_URL" : process.env.PGHOST || process.env.PGUSER ? "PG* env vars" : "DB_* defaults");
+console.log("  Database:", process.env.PGDATABASE || process.env.DB_NAME || "(from DATABASE_URL)");
+console.log("  Source:", dbSource);
 
 
 // const pool = new Pool({
