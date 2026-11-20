@@ -22,3 +22,7 @@ If you are developing a production application, we recommend using TypeScript wi
 - Configure the mobile bucket to serve `index.html` for 404/error responses so `BrowserRouter` routes like `/connect/:guid` work on refresh.
 - Build the frontend with `VITE_API_URL` set to your backend origin, for example `https://api.connectcards.live`, so production fetches do not target the static S3 bucket.
 - If you change the backend URL later, rebuild and redeploy both apps so the generated client code picks up the new API base.
+
+
+- The `msgcause-mobile` bucket must have **Block Public Access disabled** and a public `s3:GetObject` bucket policy.
+- CloudFront origin must point to the **S3 website endpoint** (`msgcause-mobile.s3-website-us-west-2.amazonaws.com`) not the REST endpoint, so custom error responses (403→index.html) are respected.
