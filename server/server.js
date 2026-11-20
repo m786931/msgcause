@@ -1,6 +1,12 @@
 const envName = (process.env.NODE_ENV || 'development').toLowerCase();
-require('dotenv').config({ path: `.env.${envName}` });
-console.log(`[boot] Loading server (env=${envName})`);
+const isRailway = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID || process.env.RAILWAY_SERVICE_ID);
+
+if (!isRailway) {
+  require('dotenv').config({ path: `.env.${envName}` });
+  console.log(`[boot] Loading server (env=${envName}) from .env.${envName}`);
+} else {
+  console.log(`[boot] Loading server (env=${envName}) from Railway variables`);
+}
 
 process.on('uncaughtException', (err) => {
   console.error('[fatal] uncaughtException:', err);
