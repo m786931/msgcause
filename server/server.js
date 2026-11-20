@@ -40,6 +40,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+app.get('/', (_req, res) => {
+  res.status(200).json({ ok: true, service: 'msgcause-api' });
+});
+
+app.get('/health', (_req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 app.use("/auth", authRoutes);
 app.use("/connect", connectRoutes);
 app.use("/api/register", accountRegisterRoutes);
