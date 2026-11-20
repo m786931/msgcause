@@ -1,5 +1,14 @@
 const { Pool } = require("pg");
 
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+const hasExplicitPgHost = Boolean(process.env.PGHOST || process.env.DB_HOST);
+
+if (process.env.NODE_ENV === "production" && !hasDatabaseUrl && !hasExplicitPgHost) {
+  throw new Error(
+    "Missing database configuration: set DATABASE_URL (preferred) or PGHOST/PGUSER/PGPASSWORD/PGDATABASE in production."
+  );
+}
+
 const connectionConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
@@ -26,12 +35,20 @@ const effectiveHost = process.env.DATABASE_URL
   ? "(from DATABASE_URL)"
   : (connectionConfig.host || "localhost");
 
+const effectiveUser = process.env.DATABASE_URL
+  ? "(from DATABASE_URL)"
+  : (connectionConfig.user || "postgres");
+
+const effectiveDatabase = process.env.DATABASE_URL
+  ? "(from DATABASE_URL)"
+  : (connectionConfig.database || "myapp");
+
 // Log connection info
 console.log("Database Connection Info:");
 console.log("  Host:", effectiveHost);
-console.log("  User:", process.env.PGUSER || process.env.DB_USER || "(from DATABASE_URL)");
+console.log("  User:", effectiveUser);
 console.log("  Password:", process.env.PGPASSWORD || process.env.DB_PASSWORD ? "***" : "NOT SET");
-console.log("  Database:", process.env.PGDATABASE || process.env.DB_NAME || "(from DATABASE_URL)");
+console.log("  Database:", effectiveDatabase);
 console.log("  Source:", dbSource);
 
 
